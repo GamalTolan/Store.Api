@@ -1,12 +1,20 @@
 
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
+
+
+using Persistence.Repositories;
 using Services;
 using Services.Abstractions;
 using Services.MappingProfiles;
+using StackExchange.Redis;
+using Store.Api.Factories;
+using Store.Api.Middelwares;
 using System.Reflection.Metadata;
+
 
 namespace Store.Api
 {
@@ -18,20 +26,30 @@ namespace Store.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-            }) ;
+            builder.Services.AddControllers();
 
             builder.Services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
             } );
+            builder.Services.AddSingleton<IConnectionMultiplexer>(
+                _ => ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis"))
+                );
+
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
             builder.Services.AddAutoMapper(x => x.AddProfile(new ProductProfile()));
+
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ApiResponseFactory.CustomValidationErrorResponse;
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -50,7 +68,11 @@ namespace Store.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+
+
             app.UseStaticFiles();
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

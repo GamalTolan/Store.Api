@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ namespace Services.Abstractions
 {
     public interface IServiceManager
     {
-        IProductService ProductService { get; }
-       
+       public IProductService ProductService { get; }
+       public  IBasketServices BasketServices { get; }
     }
 }
