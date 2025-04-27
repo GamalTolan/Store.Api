@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Domain.Contracts;
 using Services.Abstractions;
 using System;

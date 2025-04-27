@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
-<<<<<<< Updated upstream
-=======
+
+
 using Persistence.Repositories;
 using Services;
 using Services.Abstractions;
@@ -14,7 +14,7 @@ using StackExchange.Redis;
 using Store.Api.Factories;
 using Store.Api.Middelwares;
 using System.Reflection.Metadata;
->>>>>>> Stashed changes
+
 
 namespace Store.Api
 {
@@ -38,13 +38,13 @@ namespace Store.Api
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-<<<<<<< Updated upstream
-=======
+
+
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
             builder.Services.AddScoped<IBasketRepository, BasketRepository>();
             builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
             builder.Services.AddAutoMapper(x => x.AddProfile(new ProductProfile()));
->>>>>>> Stashed changes
+
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -68,12 +68,11 @@ namespace Store.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-<<<<<<< Updated upstream
 
-=======
+
+
             app.UseStaticFiles();
             app.UseMiddleware<GlobalErrorHandlingMiddleware>();
->>>>>>> Stashed changes
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
