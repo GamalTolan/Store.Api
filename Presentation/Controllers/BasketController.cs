@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Presentation.Controllers
 {
     [ApiController]
-    [Route("api/[controller/[action]")]
+    [Route("api/[controller]/[action]")]
     public class BasketController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet("{id}")]
