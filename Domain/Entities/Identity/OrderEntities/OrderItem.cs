@@ -8,12 +8,21 @@ namespace Domain.Entities.Identity.OrderEntities
 {
     public class OrderItem : BaseEntity<Guid>
     {
+        public OrderItem()
+        {
+            
+        }
+
+        public OrderItem(ProductInOrderItem product, int quantity, decimal price)
+        {
+            Product = product;
+            Quantity = quantity;
+            Price = price;
+        }
+
         public ProductInOrderItem Product { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
-        public DeliveryMethod DeliveryMethod { get; set; }
-        public int DeliveryMethodId { get; set; }
-        public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
-       public decimal SubTotal { get; set; }
+        
     }
 }
